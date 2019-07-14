@@ -1,1 +1,1 @@
-export const SERVER_URL = "http://192.168.100.5:8000/";
+export const SERVER_URL = "https://baroque-choucroute-81714.herokuapp.com/";
