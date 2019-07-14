@@ -1,16 +1,14 @@
 export const initialState ={
     usersOnline: [],
-    messages:[]
+    messages:[],
+    sentiments: "neutral"
 };
 
 export default function(state = initialState, action){
     switch(action.type){
         case "GET_USERS_ONLINE":
-            return {
-                ...state,
-                ...action.payload
-            };
         case "GET_ALL_MESSAGES":
+        case "UPDATE_SENTIMENTS":
             return {
                 ...state,
                 ...action.payload

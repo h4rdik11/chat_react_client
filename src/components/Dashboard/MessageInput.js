@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {sendMessage} from '../../actions/DashboardActions';
+import {sendMessage, getSentimentScore} from '../../actions/DashboardActions';
 
 class MessageInput extends Component{
 
@@ -17,6 +17,9 @@ class MessageInput extends Component{
     setMessage(e){
         e.preventDefault();
         const message = e.target.value;
+        if(message.length > 0){
+            this.props.getSentimentScore(message);
+        }
         this.setState({message});
     }
 
@@ -30,7 +33,9 @@ class MessageInput extends Component{
     sendMessage(e){
         e.preventDefault();
         const message = this.state.message;
-        this.props.sendMessage(message,this.props.userDetails);
+        if(message.length > 0){
+            this.props.sendMessage(message,this.props.userDetails);
+        }
         document.getElementById("message").value = "";
     }
 
@@ -54,7 +59,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        sendMessage: (message, userDetails) =>  dispatch(sendMessage(message, userDetails))
+        sendMessage: (message, userDetails) =>  dispatch(sendMessage(message, userDetails)),
+        getSentimentScore: (message) => dispatch(getSentimentScore(message))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(MessageInput);

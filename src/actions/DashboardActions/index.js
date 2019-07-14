@@ -45,7 +45,6 @@ export const sendMessage = (message, userDetails) => {
         const data = {
             sender_id: userDetails._id,
             sender: userDetails.name,
-            timestamp: Date.now(),
             message: message
         };
         socket.emit("send_message", data);
@@ -59,9 +58,25 @@ export const sendMessage = (message, userDetails) => {
     };
 }
 
+export const getSentimentScore = (message) => {
+    return dispatch => {
+        const promise = getSentimentScorefromAPI(message);
+        promise.then(res => {
+            dispatch({
+                type: "UPDATE_SENTIMENTS",
+                payload: {
+                    sentiments: res.data.polarity 
+                }
+            });
+        });
+    }
+}
+
 export const goOffline = (id) => {
      console.log("ACTION : ", id);
 }
+
+//REUSABLE ASYNCHROUNOUS METHODS
 
 const getMessageFromAPI = async () => {
     return await axios.get(SERVER_URL+"message/");
@@ -73,4 +88,8 @@ const sendMessageToAPI = async (data) => {
 
 const getAllUsersFromAPI = async () => {
     return await axios.get(SERVER_URL+'online_user');
+}
+
+const getSentimentScorefromAPI = async (message) => {
+    return await axios.post(SERVER_URL+"message/sentimentScore", {message: message});
 }
